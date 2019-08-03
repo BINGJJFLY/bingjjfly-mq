@@ -1,7 +1,6 @@
-package com.wjz.activemq.reliability;
+package com.wjz.activemq.reliability.tx;
 
 import javax.jms.Connection;
-import javax.jms.DeliveryMode;
 import javax.jms.JMSException;
 import javax.jms.MessageProducer;
 import javax.jms.Queue;
@@ -10,37 +9,35 @@ import javax.jms.TextMessage;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 
-/**
- * 可靠性-持久化
- * 
- * 生产者默认使用持久化策略
- * 
- * @author iss002
- *
- */
-public class Persistence_Queue {
+public class JmsProducer_Transaction {
 
 	public static final String DEFAULT_BROKER_BIND_URL = "tcp://192.168.21.131:61616";
-	public static final String QUEUE_NAME = "queue";
+	public static final String QUEUE_NAME = "queue_transaction";
 	
 	public static void main(String[] args) throws JMSException {
 		ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(DEFAULT_BROKER_BIND_URL);
 		Connection conn = factory.createConnection();
 		conn.start();
-		Session session = conn.createSession(false, Session.AUTO_ACKNOWLEDGE);
+		// 开始事务设置为true
+		Session session = conn.createSession(true, Session.AUTO_ACKNOWLEDGE);
 		Queue queue = session.createQueue(QUEUE_NAME);
 		MessageProducer producer = session.createProducer(queue);
-		
-		// 生产者设置是否持久化
-		producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-		
-		for (int i = 0; i < 6; i++) {
-			TextMessage message = session.createTextMessage("queue_message_" + i);
-			producer.send(message);
+		try {
+			for (int i = 0; i < 3; i++) {
+				TextMessage message = session.createTextMessage("queue_message_transaction_" + i);
+				producer.send(message);
+			}
+			// 事务提交
+			session.commit();
+			System.out.println("Success.");
+		} catch (Exception e) {
+			// 事务回滚
+			session.rollback();
+		} finally {
+			producer.close();
+			session.close();
+			conn.close();
 		}
-		producer.close();
-		session.close();
-		conn.close();
-		System.out.println("Success.");
 	}
+
 }

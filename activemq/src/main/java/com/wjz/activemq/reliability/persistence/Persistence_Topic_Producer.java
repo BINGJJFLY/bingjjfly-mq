@@ -1,4 +1,4 @@
-package com.wjz.activemq.reliability;
+package com.wjz.activemq.reliability.persistence;
 
 import javax.jms.Connection;
 import javax.jms.DeliveryMode;
