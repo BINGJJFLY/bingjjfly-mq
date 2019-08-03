@@ -30,8 +30,10 @@
 	消息头、消息体、消息属性
 	消息头属性：
 			JMSDestination	目的地
-			JMSDeliveryMode 是否持久化，默认是
+			JMSDeliveryMode 是否持久化，队列默认是，主题消息模式默认不是，主题发布订阅模式默认是
 			JMSExpiration	过期时间，默认长期有效
 			JMSPriority		优先级，默认4
 			JMSMessageID	唯一标识
-		
+
+6、消息的可靠性
+	事务、持久化、签收		

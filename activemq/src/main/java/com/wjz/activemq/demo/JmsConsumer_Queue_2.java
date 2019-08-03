@@ -16,7 +16,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 public class JmsConsumer_Queue_2 {
 	
 	public static final String DEFAULT_BROKER_BIND_URL = "tcp://192.168.21.131:61616";
-	public static final String QUEUE_NAME = "queue_1";
+	public static final String QUEUE_NAME = "queue";
 
 	public static void main(String[] args) throws JMSException, IOException {
 		ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(DEFAULT_BROKER_BIND_URL);
