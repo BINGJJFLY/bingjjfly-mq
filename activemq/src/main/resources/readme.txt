@@ -8,7 +8,7 @@
 	工作模式	
 			“发布-订阅”模式，没有订阅者消息会被丢弃，一个消息被多个订阅者消费
 	
-			Queue数据默认会在服务器上以文件形式保存，如ActiveMQ在$AMQ_HOME\data\kr-store\data下，也可配置DB存储
+			Queue数据默认会在服务器上以文件形式保存，如ActiveMQ在$AMQ_HOME\data\kahadb下，也可配置DB存储
 	有无状态
 			无状态
 			
@@ -27,7 +27,11 @@
 	Provider（MQ服务器）、Producer（生产者）、Consumer（消费者）、Message（消息）
 
 5、消息头组成元素？
-	消息头、消息体、消息属性	
-	
-	
+	消息头、消息体、消息属性
+	消息头属性：
+			JMSDestination	目的地
+			JMSDeliveryMode 是否持久化，默认是
+			JMSExpiration	过期时间，默认长期有效
+			JMSPriority		优先级，默认4
+			JMSMessageID	唯一标识
 		
