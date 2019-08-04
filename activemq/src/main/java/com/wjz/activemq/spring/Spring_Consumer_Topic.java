@@ -7,16 +7,16 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
-@Service("springConsumerQueue")
-public class Spring_Consumer_Queue {
+@Service("springConsumerTopic")
+public class Spring_Consumer_Topic {
 	
-	@Resource(name = "jmsTemplateQueue")
+	@Resource(name = "jmsTemplateTopic")
 	private JmsTemplate jmsTemplate;
 
 	@SuppressWarnings("resource")
 	public static void main(String[] args) {
 		ApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring-jms.xml");
-		Spring_Consumer_Queue consumer = (Spring_Consumer_Queue) context.getBean("springConsumerQueue");
+		Spring_Consumer_Topic consumer = (Spring_Consumer_Topic) context.getBean("springConsumerTopic");
 		String result = (String) consumer.jmsTemplate.receiveAndConvert();
 		System.out.println("接收到的消息：" + result);
 	}

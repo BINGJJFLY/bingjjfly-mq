@@ -23,10 +23,29 @@
 	<bean id="queue" class="org.apache.activemq.command.ActiveMQQueue">
 		<constructor-arg index="0" value="spring-active-queue" />
 	</bean>
+	<bean id="topic" class="org.apache.activemq.command.ActiveMQTopic">
+		<constructor-arg index="0" value="spring-active-topic" />
+	</bean>
 	
 	<!-- 配置模板类 -->
-	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+	<bean id="jmsTemplateQueue" class="org.springframework.jms.core.JmsTemplate">
 		<property name="connectionFactory" ref="jmsFactory" />
 		<property name="defaultDestination" ref="queue" />
+	</bean>
+	<bean id="jmsTemplateTopic" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="jmsFactory" />
+		<property name="defaultDestination" ref="topic" />
+	</bean>
+	
+	<!-- 配置监听器 -->
+	<bean id="messageListenerQueue" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="jmsFactory" />
+		<property name="destination" ref="queue" />
+		<property name="messageListener" ref="textMessageListener" />
+	</bean>
+	<bean id="messageListenerTopic" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="jmsFactory" />
+		<property name="destination" ref="topic" />
+		<property name="messageListener" ref="textMessageListener" />
 	</bean>
 </beans>

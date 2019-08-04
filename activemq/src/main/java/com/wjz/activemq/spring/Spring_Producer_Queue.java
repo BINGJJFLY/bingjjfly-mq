@@ -1,6 +1,7 @@
 package com.wjz.activemq.spring;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service("springProducerQueue")
 public class Spring_Producer_Queue {
 	
-	@Autowired
+	@Resource(name = "jmsTemplateQueue")
 	private JmsTemplate jmsTemplate;
 	
 	@SuppressWarnings("resource")
