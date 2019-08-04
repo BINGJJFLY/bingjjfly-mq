@@ -30,7 +30,7 @@
 	消息头、消息体、消息属性
 	消息头属性：
 			JMSDestination	目的地
-			JMSDeliveryMode 是否持久化，队列默认是，主题消息模式默认不是，主题发布订阅模式默认是
+			JMSDeliveryMode 是否持久化，队列默认是，主题消息模式（非持久发布订阅）默认不是，主题发布订阅模式（持久发布订阅）默认是
 			JMSExpiration	过期时间，默认长期有效
 			JMSPriority		优先级，默认4
 			JMSMessageID	唯一标识
@@ -40,7 +40,8 @@
 		
 	事务和签收的关系：消费者未开启事务，签收模式为手动的话，消息应告知已签收；消费者开启事务，提交事务，消息全部自动签收
 	
-
+7、指定配置文件启动
+	/home/activeMQ/apache-activemq-5.15.9/bin/activemq start xbean:file:/home/activeMQ/apache-activemq-5.15.9/conf/activemq.xml
 
 
 
