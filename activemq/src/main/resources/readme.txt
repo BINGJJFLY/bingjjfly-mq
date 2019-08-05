@@ -55,11 +55,30 @@
 
 	LevelDB的存储原理：是基于文件的持久性数据库，它不使用自定义B-Tree实现来索引预写日志，而是使用基于LevelDB的索引
 	
+	JDBC配置：
+		Mysql版本5.5，将mysql-connector-java-5.1.38.jar放入apache-activemq-5.15.9/lib目录下
+		
+		<persistenceAdapter> 
+			<!-- createTablesOnStartup（ MQ启动时自动创建表，默认为true ） -->
+			<jdbcPersistenceAdapter dataSource="#mysql-ds"/> 
+		</persistenceAdapter>
+		
+		<bean id="mysql-ds" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close"> 
+			<property name="driverClassName" value="com.mysql.jdbc.Driver"/> 
+			<property name="url" value="jdbc:mysql://127.0.0.1/activemq?relaxAutoCommit=true"/> 
+			<property name="username" value="activemq"/> 
+			<property name="password" value="activemq"/> 
+			<property name="poolPreparedStatements" value="true"/> 
+		</bean>
 	
-	
-	
+		Queue模型中：
+			当DeliveryMode为NON_PERSISTENT时，消息存储在内存中
+			当DeliveryMode为PERSISTENT时，消息存储在MQ文件或者是数据库中
+			消息一旦被消费将从Broker中删除（内存/文件/数据库）
 
-
-
-
+		Topic模型中：
+			消息模式，消息存储在内存中
+			发布订阅模式，消息存储在MQ文件或者是数据库中（acks为订阅者信息，msgs为消息信息）
+			消息被消费不会删除订阅者信息和消息信息
+			
 
