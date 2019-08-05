@@ -6,7 +6,7 @@
 2、Queue和Topic的差异？
 			“负载均衡”模式，即使没有消费者消息也不会丢弃，一个消息只被一个消费者消费
 	工作模式	
-			“发布-订阅”模式，没有订阅者消息会被丢弃，一个消息被多个订阅者消费
+			“发布订阅”模式，没有订阅者消息会被丢弃，一个消息被多个订阅者消费
 	
 			Queue数据默认会在服务器上以文件形式保存，如ActiveMQ在$AMQ_HOME\data\kahadb下，也可配置DB存储
 	有无状态
@@ -36,28 +36,30 @@
 			JMSMessageID	唯一标识
 
 6、消息的可靠性
-	事务、持久化、签收
+	事务、持久化、签收（MQ服务自带功能，但是MQ宕机则无法工作）
 		
 	事务和签收的关系：消费者未开启事务，签收模式为手动的话，消息应告知已签收；消费者开启事务，提交事务，消息全部自动签收
 	
 7、指定配置文件启动
 	/home/activeMQ/apache-activemq-5.15.9/bin/activemq start xbean:file:/home/activeMQ/apache-activemq-5.15.9/conf/activemq.xml
 
+8、ActiveMQ的持久化机制？
+	持久化机制有JDBC、AMQ、KahaDB、LevelDB
+	
+	KahaDB的存储原理：使用事务日志和索引文件来存储所有的消息数据
+		db-{num}.log 存储消息数据，默认大小32mb，超出部分另创建一个日志文件，日志文件不再需要后删除或归档
+		db.data 该文件包含了BTree索引，索引指向db-{num}.log中的消息
+		db.free 当前db.data文件里哪些页面是空闲的，文件具体内容是所有空闲页面的id
+		db.redo 用来消息恢复，如果KahaDB消息存储时被强制退出时产生，MQ重启后用于恢复BTree索引
+		lock 表示当前获得KahaDB读写权限的Broker，读共享写独占
 
-
-
-
-
-
-
-
-
-
-
-
-
+	LevelDB的存储原理：是基于文件的持久性数据库，它不使用自定义B-Tree实现来索引预写日志，而是使用基于LevelDB的索引
 	
 	
 	
 	
-		
+
+
+
+
+
