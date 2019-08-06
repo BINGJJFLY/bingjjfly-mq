@@ -95,3 +95,18 @@
 			useJournal="true"
 			useQuickJournal="true"/>
 	</persistenceFactory>
+
+10、ActiveMQ高可用方式MQ集群？
+	Zookeeper集群注册所有的ActiveMQ Broker，其中一个被推举为Master，其他被视为Salve
+	如果Master宕机，Zookeeper将从Salve中推举出一个Master
+	各个Salve连接Master，同步Master状态，只有Master接收客户端的连接
+	1主2从模式，Master将会存储并更新然后等待（3/2+1-1=1）1个Slave存储和更新完成后才通知Success
+	有一个节点需要作为观察节点，当Master宕机后，至少有一个法定节点在线以能够找到拥有最新状态的节点，才可推举出Master
+	推荐至少运行3个节点，以防止一个节点宕机后服务中断
+
+
+
+
+
+	
+	
