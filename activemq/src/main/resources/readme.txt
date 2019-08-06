@@ -81,4 +81,17 @@
 			发布订阅模式，消息存储在MQ文件或者是数据库中（acks为订阅者信息，msgs为消息信息）
 			消息被消费不会删除订阅者信息和消息信息
 			
-
+9、journal是什么？
+	MQ向Mysql持久化消息，这期间涉及到读写数据库，速度很慢，journal是一种高速缓存日志，处于MQ和Mysql之间
+	MQ生产者生产消息到journal，消费者从journal取消息，生产者和消费都很快则几乎没有消息持久化到Mysql
+	生产者太快或者消费者太慢，journal则可以以批量的方式持久化到Mysql
+	
+	<persistenceFactory>
+		<journalPersistenceAdapterFactory 
+			journalLogFiles="5" 
+			journalLogFileSize="32768" 
+			dataDirectory="activemq-data" 
+			dataSource="#mysql-ds"
+			useJournal="true"
+			useQuickJournal="true"/>
+	</persistenceFactory>
