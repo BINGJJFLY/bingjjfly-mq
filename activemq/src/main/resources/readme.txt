@@ -124,9 +124,13 @@
 	MQ服务器修改配置文件，添加schedulerSupport="true"
 	<broker xmlns="http://activemq.apache.org/schema/core" brokerName="localhost" dataDirectory="${activemq.data}" schedulerSupport="true">
 
-
-
-
+14、哪些情况会导致消息重发？
+	消费者端开启了事务但是未能提交事务
+	消费者端签收类型为手动签收但是拒绝签收（session.recover()）
+	
+	间隔重发：1秒间隔，重发次数6次
+	方式：RedeliveryPolicy可以通过ActiveMQConnectionFactory或ActiveMQConnection设置
+		也可以为每一个Destination设置一个，RedeliveryPolicyMap保存信息
 
 
 	

@@ -20,7 +20,7 @@ public class JmsConsumer_Transaction {
 		ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(DEFAULT_BROKER_BIND_URL);
 		Connection conn = factory.createConnection();
 		conn.start();
-		// 开始事务设置为true
+		// 开启事务设置为true
 		Session session = conn.createSession(true, Session.AUTO_ACKNOWLEDGE);
 		Queue queue = session.createQueue(QUEUE_NAME);
 		MessageConsumer consumer = session.createConsumer(queue);
