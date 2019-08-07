@@ -104,9 +104,29 @@
 	有一个节点需要作为观察节点，当Master宕机后，至少有一个法定节点在线以能够找到拥有最新状态的节点，才可推举出Master
 	推荐至少运行3个节点，以防止一个节点宕机后服务中断
 
+	1、Zookeeper集群（1主2从）
+	2、ActiveMQ集群（1主2从）
+		管理端端口不相同（jetty.xml）
+		brokerName相同（activemq.xml）
+		vim /etc/hosts
+			192.168.188.138 www.activemq.com
+		LevelDB持久化配置
 
-
-
-
+11、异步投递消息？
+	ActiveMQ支持同步、异步发送消息到Broker，默认使用异步，除非明确指定使用同步或未使用事务且要求持久化职则为同步
+	优点：最大化生产者发送消息的效率
+	缺点：消息可能积压，消耗消费者端内存，降低Broker性能；不能有效确保消息发送成功
 	
+12、如何确保异步投递消息成功发送至MQ？
+	异步消息发送时需要回调
+	
+13、延时发送或定时发送？
+	MQ服务器修改配置文件，添加schedulerSupport="true"
+	<broker xmlns="http://activemq.apache.org/schema/core" brokerName="localhost" dataDirectory="${activemq.data}" schedulerSupport="true">
+
+
+
+
+
+
 	
