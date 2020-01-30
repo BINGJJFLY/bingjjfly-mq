@@ -132,5 +132,31 @@
 	方式：RedeliveryPolicy可以通过ActiveMQConnectionFactory或ActiveMQConnection设置
 		也可以为每一个Destination设置一个，RedeliveryPolicyMap保存信息
 
-
+15、死信队列？
+	使用MQ时设计两个队列，一个业务队列，一个死信队列（处理异常情况）
+	
+	共享队列（SharedDeadLetterStrategy）默认策略，所有失败的消息都加入到这里
+	私有队列（IndividualDeadLetterStrategy），默认的无论是Topic还是Queue，Broker都将使用Queue保存DeadLetter
+	<policyEntry queue="order" >
+		<deadLetterStrategy>
+			<individualDeadLetterStrategy queuePrefix="ActiveMQ.DLQ.Queue." useQueueForTopicMessages="false" />
+		</deadLetterStrategy>
+	</policyEntry>
+	
+	两种队列：
+		自动删除过期消息
+			<policyEntry queue=">" >
+				<deadLetterStrategy>
+					<sharedDeadLetterStrategy processExpired="false" />
+				</deadLetterStrategy>
+			</policyEntry>
+		非持久消息入死信队列
+			<policyEntry queue=">" >
+				<deadLetterStrategy>
+					<sharedDeadLetterStrategy processNonPersistent="true" />
+				</deadLetterStrategy>
+			</policyEntry>
+	
+16、消息重复消费？
+	为消息设置一个全局id，消费过该消息，将<id, message>以K-V形式写入Redis中，消费者消费前，先去Redis中查询有没有消费记录即可
 	
