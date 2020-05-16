@@ -26,6 +26,7 @@ public class JmsConsumer_Broker {
 		while (true) {
 			TextMessage message = (TextMessage) consumer.receive(3000L);
 			if (message != null) {
+				System.out.println(message.getJMSCorrelationID());
 				System.out.println(message.getText());
 			} else {
 				break;

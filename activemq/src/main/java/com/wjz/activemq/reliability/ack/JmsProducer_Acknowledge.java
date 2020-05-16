@@ -20,7 +20,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
  */
 public class JmsProducer_Acknowledge {
 	
-	public static final String DEFAULT_BROKER_BIND_URL = "tcp://192.168.21.131:61616";
+	public static final String DEFAULT_BROKER_BIND_URL = "tcp://127.0.0.1:61616";
 	public static final String QUEUE_NAME = "queue_ack";
 	
 	public static void main(String[] args) throws JMSException {
@@ -28,12 +28,13 @@ public class JmsProducer_Acknowledge {
 		Connection conn = factory.createConnection();
 		conn.start();
 		// 不开启事务，自动签收（涉及可靠性）
-		Session session = conn.createSession(false, Session.AUTO_ACKNOWLEDGE);
+		Session session = conn.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 		Queue queue = session.createQueue(QUEUE_NAME);
 		MessageProducer producer = session.createProducer(queue);
 		for (int i = 0; i < 3; i++) {
 			TextMessage message = session.createTextMessage("queue_ack_message_" + i);
 			producer.send(message);
+//			message.acknowledge();
 		}
 		producer.close();
 		session.close();

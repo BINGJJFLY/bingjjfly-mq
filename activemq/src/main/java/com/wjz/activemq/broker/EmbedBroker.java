@@ -13,10 +13,11 @@ public class EmbedBroker {
 	public static final String DEFAULT_BROKER_BIND_URL = "tcp://127.0.0.1:61616";
 	
 	public static void main(String[] args) throws Exception {
-		BrokerService service = new BrokerService();
-		service.setUseJmx(true);
-		service.addConnector(DEFAULT_BROKER_BIND_URL);
-		service.start();
+		BrokerService broker = new BrokerService();
+		broker.setPersistent(false);
+		broker.setUseJmx(false);
+		broker.addConnector(DEFAULT_BROKER_BIND_URL);
+		broker.start();
 	}
 
 }

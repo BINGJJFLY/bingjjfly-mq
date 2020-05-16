@@ -26,9 +26,9 @@
 4、JMS四大组成元素？
 	Provider（MQ服务器）、Producer（生产者）、Consumer（消费者）、Message（消息）
 
-5、消息头组成元素？
+5、消息组成元素？
 	消息头、消息体、消息属性
-	消息头属性：
+	消息属性：
 			JMSDestination	目的地
 			JMSDeliveryMode 是否持久化，队列默认是，主题消息模式（非持久发布订阅）默认不是，主题发布订阅模式（持久发布订阅）默认是
 			JMSExpiration	过期时间，默认长期有效
@@ -55,14 +55,16 @@
 
 	LevelDB的存储原理：是基于文件的持久性数据库，它不使用自定义B-Tree实现来索引预写日志，而是使用基于LevelDB的索引
 	
-	JDBC配置：
+	JDBC配置（conf/activemq.xml）：
 		Mysql版本5.5，将mysql-connector-java-5.1.38.jar放入apache-activemq-5.15.9/lib目录下
 		
+		<broker>标签内部
 		<persistenceAdapter> 
 			<!-- createTablesOnStartup（ MQ启动时自动创建表，默认为true ） -->
 			<jdbcPersistenceAdapter dataSource="#mysql-ds"/> 
 		</persistenceAdapter>
 		
+		<broker>标签外部
 		<bean id="mysql-ds" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close"> 
 			<property name="driverClassName" value="com.mysql.jdbc.Driver"/> 
 			<property name="url" value="jdbc:mysql://127.0.0.1/activemq?relaxAutoCommit=true"/> 
@@ -86,6 +88,7 @@
 	MQ生产者生产消息到journal，消费者从journal取消息，生产者和消费都很快则几乎没有消息持久化到Mysql
 	生产者太快或者消费者太慢，journal则可以以批量的方式持久化到Mysql
 	
+	<broker>标签内部
 	<persistenceFactory>
 		<journalPersistenceAdapterFactory 
 			journalLogFiles="5" 
@@ -158,5 +161,6 @@
 			</policyEntry>
 	
 16、消息重复消费？
+	由于网络延迟，可能会造成MQ消息重发，此时可能会发生消息重复消费
 	为消息设置一个全局id，消费过该消息，将<id, message>以K-V形式写入Redis中，消费者消费前，先去Redis中查询有没有消费记录即可
 	

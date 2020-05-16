@@ -23,6 +23,7 @@ public class JmsProducer_Broker {
 		MessageProducer producer = session.createProducer(queue);
 		for (int i = 0; i < 3; i++) {
 			TextMessage message = session.createTextMessage("queue_broker_message_" + i);
+			System.out.println(message.getJMSCorrelationID());
 			producer.send(message);
 		}
 		producer.close();
